@@ -1,0 +1,320 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #f59e0b;
+  --danger: #ef4444;
+  --success: #10b981;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== Navbar ===== */
+nav {
+  background: var(--primary);
+  color: white;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.nav-links { display: flex; gap: 4px; align-items: center; }
+.nav-links button {
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background .2s, color .2s;
+}
+.nav-links button:hover, .nav-links button.active {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+.nav-links button.logout-btn { color: #fca5a5; }
+.nav-links button.logout-btn:hover { background: rgba(239,68,68,0.2); color: #fca5a5; }
+
+.badge {
+  background: var(--secondary);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  margin-left: 4px;
+  font-weight: 700;
+}
+
+/* ===== Pages ===== */
+.page { display: none; padding: 2rem; max-width: 960px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* ===== Auth (login/register) ===== */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 2rem;
+}
+
+.auth-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card h2 { margin-bottom: 1.5rem; color: var(--primary); text-align: center; }
+.auth-tabs { display: flex; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.auth-tab {
+  flex: 1; padding: 10px; border: none; background: transparent;
+  cursor: pointer; font-size: 0.95rem; color: var(--muted); transition: color .2s;
+}
+.auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; font-weight: 600; }
+
+/* ===== Cards ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.card-header h2 { font-size: 1.1rem; color: var(--text); }
+
+/* ===== Forms ===== */
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: white;
+  transition: border-color .2s;
+  outline: none;
+}
+input:focus, select:focus { border-color: var(--primary); }
+
+/* ===== Buttons ===== */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity .2s, transform .1s;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-full { width: 100%; }
+
+/* ===== Alerts ===== */
+.alert {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+.alert.show { display: block; }
+.alert-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.alert-info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+/* ===== Booking list items ===== */
+.booking-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid var(--primary);
+  transition: box-shadow .2s;
+}
+.booking-item:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+.booking-item.status-confirmed { border-left-color: var(--success); }
+.booking-item.status-cancelled { border-left-color: var(--danger); opacity: 0.7; }
+.booking-item.status-completed { border-left-color: var(--muted); }
+
+.booking-route { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.booking-meta { font-size: 0.85rem; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+.booking-meta span { display: flex; align-items: center; gap: 4px; }
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-confirmed { background: #dcfce7; color: #166534; }
+.status-pending   { background: #fef9c3; color: #854d0e; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }
+.status-completed { background: #f1f5f9; color: #475569; }
+
+/* ===== Notification items ===== */
+.notif-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-item.unread { background: #eff6ff; margin: 0 -1.5rem; padding: 12px 1.5rem; }
+.notif-icon { font-size: 1.4rem; flex-shrink: 0; }
+.notif-body { flex: 1; }
+.notif-message { font-size: 0.9rem; }
+.notif-time { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+/* ===== Fare preview box ===== */
+.fare-preview {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 1rem;
+  display: none;
+}
+.fare-preview.show { display: block; }
+.fare-preview .fare-total { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+.fare-breakdown { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+/* ===== Location cards ===== */
+.location-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.location-info { flex: 1; }
+.location-name { font-weight: 600; }
+.location-address { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+.location-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ===== Weather box ===== */
+.weather-box {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  color: white;
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin-top: 0.75rem;
+}
+.weather-current { display: flex; align-items: center; gap: 12px; }
+.weather-temp { font-size: 2rem; font-weight: 700; }
+.weather-condition { font-size: 0.95rem; opacity: 0.9; }
+.weather-forecast { display: flex; gap: 10px; margin-top: 1rem; overflow-x: auto; }
+.forecast-day {
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 8px 12px;
+  text-align: center;
+  min-width: 80px;
+  font-size: 0.8rem;
+}
+.forecast-day .day-date { opacity: 0.8; margin-bottom: 4px; }
+.forecast-day .day-temp { font-weight: 700; }
+
+/* ===== Payment receipt ===== */
+.receipt {
+  background: #f8fafc;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin-top: 1rem;
+}
+.receipt-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 4px 0; }
+.receipt-row.total { font-weight: 700; font-size: 1.1rem; border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px; color: var(--primary); }
+
+/* ===== Tabs ===== */
+.tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--card); padding: 6px; border-radius: 8px; box-shadow: var(--shadow); }
+.tab-btn {
+  flex: 1; padding: 8px 16px; border: none; border-radius: 6px;
+  background: transparent; cursor: pointer; font-size: 0.9rem;
+  color: var(--muted); transition: background .2s, color .2s;
+}
+.tab-btn.active { background: var(--primary); color: white; font-weight: 600; }
+
+/* ===== Section title ===== */
+.section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--text); display: flex; align-items: center; gap: 8px; }
+
+/* ===== Empty state ===== */
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+.empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+.empty-state p { font-size: 0.95rem; }
+
+/* ===== Loading spinner ===== */
+.spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== Discount banner ===== */
+.discount-banner {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  display: none;
+}
+.discount-banner.show { display: flex; }
+
+/* ===== Profile card ===== */
+.profile-info { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.profile-field label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+.profile-field p { font-size: 1rem; margin-top: 2px; }
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .profile-info { grid-template-columns: 1fr; }
+  nav { padding: 0 1rem; }
+  .page { padding: 1rem; }
+}
