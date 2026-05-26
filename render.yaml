@@ -1,0 +1,98 @@
+services:
+  - type: web
+    name: cabgo-customer-service
+    runtime: node
+    buildCommand: npm install
+    startCommand: node customerService.js
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: cabgo-booking-service
+    runtime: node
+    buildCommand: npm install
+    startCommand: node bookingService.js
+    envVars:
+      - key: PORT
+        value: 3002
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CUSTOMER_SERVICE_URL
+        sync: false
+      - key: FARE_SERVICE_URL
+        sync: false
+
+  - type: web
+    name: cabgo-payment-service
+    runtime: node
+    buildCommand: npm install
+    startCommand: node paymentService.js
+    envVars:
+      - key: PORT
+        value: 3003
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FARE_SERVICE_URL
+        sync: false
+
+  - type: web
+    name: cabgo-fare-service
+    runtime: node
+    buildCommand: npm install
+    startCommand: node fareService.js
+    envVars:
+      - key: PORT
+        value: 3004
+      - key: JWT_SECRET
+        sync: false
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: RAPIDAPI_FARE_HOST
+        value: taxi-fare-calculator.p.rapidapi.com
+
+  - type: web
+    name: cabgo-location-service
+    runtime: node
+    buildCommand: npm install
+    startCommand: node locationService.js
+    envVars:
+      - key: PORT
+        value: 3005
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: RAPIDAPI_WEATHER_HOST
+        value: weatherapi-com.p.rapidapi.com
+
+  - type: web
+    name: cabgo-gateway
+    runtime: node
+    buildCommand: npm install
+    startCommand: node gatewayService.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: JWT_SECRET
+        sync: false
+      - key: CUSTOMER_SERVICE_URL
+        sync: false
+      - key: BOOKING_SERVICE_URL
+        sync: false
+      - key: PAYMENT_SERVICE_URL
+        sync: false
+      - key: FARE_SERVICE_URL
+        sync: false
+      - key: LOCATION_SERVICE_URL
+        sync: false
