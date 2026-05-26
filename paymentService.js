@@ -26,7 +26,7 @@ function getPassengersMultiplier(passengers) {
   return null; // > 8 not allowed
 }
 
-// ── Auth middleware ───────────────────────────────────────────────────────────
+// Auth middleware
 function authMiddleware(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access token required' });
@@ -38,7 +38,7 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ── Process payment ───────────────────────────────────────────────────────────
+// Process payment
 app.post('/payments/pay', authMiddleware, async (req, res) => {
   try {
     const { bookingId, startLocation, endLocation, cabType, dateTime, passengers, applyDiscount } = req.body;
@@ -93,7 +93,7 @@ app.post('/payments/pay', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Estimate price (no payment saved) ────────────────────────────────────────
+// Estimate price (no payment saved)
 app.post('/payments/estimate', authMiddleware, async (req, res) => {
   try {
     const { startLocation, endLocation, cabType, dateTime, passengers, applyDiscount } = req.body;
@@ -130,7 +130,7 @@ app.post('/payments/estimate', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get all payments for user ─────────────────────────────────────────────────
+// Get all payments for user
 app.get('/payments', authMiddleware, async (req, res) => {
   try {
     const payments = await Payment.find({ userId: req.user.id }).sort({ createdAt: -1 });
@@ -140,7 +140,7 @@ app.get('/payments', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get payment for a specific booking ───────────────────────────────────────
+// Get payment for a specific booking
 app.get('/payments/:bookingId', authMiddleware, async (req, res) => {
   try {
     const payment = await Payment.findOne({ bookingId: req.params.bookingId, userId: req.user.id });
@@ -151,10 +151,10 @@ app.get('/payments/:bookingId', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Health check ──────────────────────────────────────────────────────────────
+// Health check
 app.get('/health', (req, res) => res.json({ service: 'payment-service', status: 'ok' }));
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// Start
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(3003, () => console.log('Payment Service running on port 3003'));

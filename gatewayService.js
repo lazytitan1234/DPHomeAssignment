@@ -20,7 +20,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ── Route all /api/* requests to the correct microservice ────────────────────
+// Route all /api/* requests to the correct microservice
 app.use('/api/auth',          proxy(CUSTOMER_URL,  { proxyReqPathResolver: req => `/auth${req.url}` }));
 app.use('/api/notifications', proxy(CUSTOMER_URL,  { proxyReqPathResolver: req => `/notifications${req.url}` }));
 app.use('/api/bookings',      proxy(BOOKING_URL,   { proxyReqPathResolver: req => `/bookings${req.url}` }));
@@ -28,7 +28,7 @@ app.use('/api/payments',      proxy(PAYMENT_URL,   { proxyReqPathResolver: req =
 app.use('/api/fare',          proxy(FARE_URL,      { proxyReqPathResolver: req => `/fare${req.url}` }));
 app.use('/api/locations',     proxy(LOCATION_URL,  { proxyReqPathResolver: req => `/locations${req.url}` }));
 
-// ── Health check — polls all services ────────────────────────────────────────
+// Health check — polls all services
 app.get('/health', async (req, res) => {
   const services = [
     { name: 'customer-service',  url: `${CUSTOMER_URL}/health` },
@@ -51,5 +51,5 @@ app.get('/health', async (req, res) => {
   res.json({ gateway: 'ok', services: statuses });
 });
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// Start
 app.listen(3000, () => console.log('Gateway Service running on port 3000'));

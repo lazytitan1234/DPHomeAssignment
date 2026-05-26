@@ -15,7 +15,7 @@ app.use(express.json());
 
 const FARE_URL = process.env.FARE_SERVICE_URL || 'http://localhost:3004';
 
-// ── Auth middleware ───────────────────────────────────────────────────────────
+// Auth middleware
 function authMiddleware(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access token required' });
@@ -27,7 +27,7 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ── Create booking ────────────────────────────────────────────────────────────
+// Create booking
 app.post('/bookings', authMiddleware, async (req, res) => {
   try {
     const { startLocation, endLocation, dateTime, passengers, cabType } = req.body;
@@ -77,7 +77,7 @@ app.post('/bookings', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get all bookings for user ─────────────────────────────────────────────────
+// Get all bookings for user
 app.get('/bookings', authMiddleware, async (req, res) => {
   try {
     const bookings = await Booking.find({ userId: req.user.id }).sort({ createdAt: -1 });
@@ -87,7 +87,7 @@ app.get('/bookings', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Current (upcoming) bookings ───────────────────────────────────────────────
+// Current (upcoming) bookings
 app.get('/bookings/current', authMiddleware, async (req, res) => {
   try {
     const bookings = await Booking.find({
@@ -101,7 +101,7 @@ app.get('/bookings/current', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Past bookings ─────────────────────────────────────────────────────────────
+// Past bookings
 app.get('/bookings/past', authMiddleware, async (req, res) => {
   try {
     const bookings = await Booking.find({
@@ -117,7 +117,7 @@ app.get('/bookings/past', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get single booking ────────────────────────────────────────────────────────
+// Get single booking
 app.get('/bookings/:id', authMiddleware, async (req, res) => {
   try {
     const booking = await Booking.findOne({ _id: req.params.id, userId: req.user.id });
@@ -128,7 +128,7 @@ app.get('/bookings/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Cancel booking ────────────────────────────────────────────────────────────
+// Cancel booking
 app.patch('/bookings/:id/cancel', authMiddleware, async (req, res) => {
   try {
     const booking = await Booking.findOneAndUpdate(
@@ -143,10 +143,10 @@ app.patch('/bookings/:id/cancel', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Health check ──────────────────────────────────────────────────────────────
+// Health check
 app.get('/health', (req, res) => res.json({ service: 'booking-service', status: 'ok' }));
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// Start
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(3002, () => console.log('Booking Service running on port 3002'));

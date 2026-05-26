@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ── Auth middleware ───────────────────────────────────────────────────────────
+// Auth middleware
 function authMiddleware(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access token required' });
@@ -23,7 +23,7 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ── Get all favourite locations ───────────────────────────────────────────────
+// Get all favourite locations
 app.get('/locations', authMiddleware, async (req, res) => {
   try {
     const locations = await Location.find({ userId: req.user.id }).sort({ createdAt: -1 });
@@ -33,7 +33,7 @@ app.get('/locations', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Add a favourite location ──────────────────────────────────────────────────
+// Add a favourite location
 app.post('/locations', authMiddleware, async (req, res) => {
   try {
     const { name, address } = req.body;
@@ -47,7 +47,7 @@ app.post('/locations', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Update a favourite location ───────────────────────────────────────────────
+// Update a favourite location
 app.put('/locations/:id', authMiddleware, async (req, res) => {
   try {
     const { name, address } = req.body;
@@ -63,7 +63,7 @@ app.put('/locations/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Delete a favourite location ───────────────────────────────────────────────
+// Delete a favourite location
 app.delete('/locations/:id', authMiddleware, async (req, res) => {
   try {
     const location = await Location.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
@@ -74,7 +74,7 @@ app.delete('/locations/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get weather forecast for a saved location ─────────────────────────────────
+// Get weather forecast for a saved location
 app.get('/locations/:id/weather', authMiddleware, async (req, res) => {
   try {
     const location = await Location.findOne({ _id: req.params.id, userId: req.user.id });
@@ -116,10 +116,10 @@ app.get('/locations/:id/weather', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Health check ──────────────────────────────────────────────────────────────
+// Health check
 app.get('/health', (req, res) => res.json({ service: 'location-service', status: 'ok' }));
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// Start
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(3005, () => console.log('Location Service running on port 3005'));

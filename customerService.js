@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ── Auth middleware ──────────────────────────────────────────────────────────
+// Auth middleware
 function authMiddleware(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access token required' });
@@ -23,7 +23,7 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ── Register ─────────────────────────────────────────────────────────────────
+// Register
 app.post('/auth/register', async (req, res) => {
   try {
     const { firstName, surname, email, password } = req.body;
@@ -46,7 +46,7 @@ app.post('/auth/register', async (req, res) => {
   }
 });
 
-// ── Login ─────────────────────────────────────────────────────────────────────
+// Login
 app.post('/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -69,7 +69,7 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 
-// ── Profile ───────────────────────────────────────────────────────────────────
+// Profile
 app.get('/auth/profile', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -80,7 +80,7 @@ app.get('/auth/profile', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Get notifications (inbox) ─────────────────────────────────────────────────
+// Get notifications (inbox)
 app.get('/notifications', authMiddleware, async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.user.id }).sort({ createdAt: -1 });
@@ -90,7 +90,7 @@ app.get('/notifications', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Create notification (called internally by other services) ─────────────────
+// Create notification (called internally by other services)
 app.post('/notifications', async (req, res) => {
   try {
     const { userId, type, message, data } = req.body;
@@ -104,7 +104,7 @@ app.post('/notifications', async (req, res) => {
   }
 });
 
-// ── Mark notification as read ─────────────────────────────────────────────────
+// Mark notification as read
 app.patch('/notifications/:id/read', authMiddleware, async (req, res) => {
   try {
     const notification = await Notification.findOneAndUpdate(
@@ -119,10 +119,10 @@ app.patch('/notifications/:id/read', authMiddleware, async (req, res) => {
   }
 });
 
-// ── Health check ──────────────────────────────────────────────────────────────
+// Health check
 app.get('/health', (req, res) => res.json({ service: 'customer-service', status: 'ok' }));
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// Start
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(3001, () => console.log('Customer Service running on port 3001'));
