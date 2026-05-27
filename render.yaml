@@ -2,6 +2,7 @@ services:
   - type: web
     name: cabgo-customer-service
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node customerService.js
     envVars:
@@ -15,6 +16,7 @@ services:
   - type: web
     name: cabgo-booking-service
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node bookingService.js
     envVars:
@@ -32,6 +34,7 @@ services:
   - type: web
     name: cabgo-payment-service
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node paymentService.js
     envVars:
@@ -47,6 +50,7 @@ services:
   - type: web
     name: cabgo-fare-service
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node fareService.js
     envVars:
@@ -62,6 +66,7 @@ services:
   - type: web
     name: cabgo-location-service
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node locationService.js
     envVars:
@@ -79,6 +84,7 @@ services:
   - type: web
     name: cabgo-gateway
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node gatewayService.js
     envVars:
