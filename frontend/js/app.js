@@ -1,5 +1,5 @@
 // ===== Config =====
-const API = 'http://localhost:3000/api'; // Gateway URL — update when deployed
+const API = 'https://cabgo-gateway-tz77.onrender.com/api'; // Live Render gateway
 
 // ===== State =====
 let token = localStorage.getItem('token');
