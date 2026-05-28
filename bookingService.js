@@ -62,14 +62,7 @@ app.post('/bookings', authMiddleware, async (req, res) => {
     // Task 6 — emit event: cab ready notification fires after 3 minutes
     bookingBus.emit('booking.created', { booking, userId: req.user.id });
 
-    // Task 5 — check if this is the user's 3rd booking; emit discount event once
-    const count = await Booking.countDocuments({
-      userId: req.user.id,
-      status: { $in: ['confirmed', 'completed'] }
-    });
-    if (count === 3) {
-      bookingBus.emit('discount.available', { userId: req.user.id });
-    }
+    // Task 5 — discount is emitted only after 3 COMPLETED bookings (see /complete endpoint)
 
     res.status(201).json({ message: 'Booking confirmed', booking });
   } catch (err) {
@@ -123,6 +116,33 @@ app.get('/bookings/:id', authMiddleware, async (req, res) => {
     const booking = await Booking.findOne({ _id: req.params.id, userId: req.user.id });
     if (!booking) return res.status(404).json({ error: 'Booking not found' });
     res.json(booking);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Complete a booking — Task 5: triggers discount after 3rd completed booking
+app.patch('/bookings/:id/complete', authMiddleware, async (req, res) => {
+  try {
+    const booking = await Booking.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.id, status: 'confirmed' },
+      { status: 'completed' },
+      { new: true }
+    );
+    if (!booking) return res.status(404).json({ error: 'Booking not found or cannot be completed' });
+
+    // Count how many bookings this user has completed
+    const completedCount = await Booking.countDocuments({
+      userId: req.user.id,
+      status: 'completed'
+    });
+
+    // Emit discount event exactly when the 3rd booking is completed
+    if (completedCount === 3) {
+      bookingBus.emit('discount.available', { userId: req.user.id });
+    }
+
+    res.json({ message: 'Booking completed', booking });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

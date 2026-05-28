@@ -167,7 +167,7 @@ async function loadDashboard() {
   }
 }
 
-function buildBookingCard(b) {
+function buildBookingCard(b, showComplete = false) {
   const div = document.createElement('div');
   div.className = `booking-item status-${b.status}`;
   div.innerHTML = `
@@ -177,9 +177,21 @@ function buildBookingCard(b) {
       <span>👥 ${b.passengers} passenger(s)</span>
       <span>🚗 ${b.cabType}</span>
       ${b.estimatedFare ? `<span>💶 Est. ${formatCur(b.estimatedFare)}</span>` : ''}
-      <span class="status-badge status-${b.status}">${b.status}</span>
+      <span class="status-badge status-${b.status}">${b.status.toUpperCase()}</span>
     </div>
+    ${showComplete && b.status === 'confirmed' ? `<button class="btn-complete" data-id="${b._id}" style="margin-top:8px;background:#28a745;color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;">✅ Complete Trip</button>` : ''}
   `;
+  if (showComplete && b.status === 'confirmed') {
+    div.querySelector('.btn-complete').addEventListener('click', async () => {
+      try {
+        await api('PATCH', `/bookings/${b._id}/complete`);
+        loadBookings();
+        loadDashboard();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
   return div;
 }
 
@@ -279,7 +291,8 @@ async function loadBookings() {
       return;
     }
 
-    bookings.forEach(b => container.appendChild(buildBookingCard(b)));
+    // Show Complete Trip button only on the current bookings tab
+    bookings.forEach(b => container.appendChild(buildBookingCard(b, tab === 'current')));
   } catch (err) {
     $('bookings-list').innerHTML = `<div class="alert alert-error show">${err.message}</div>`;
   }
